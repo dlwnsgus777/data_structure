@@ -10,82 +10,76 @@ public class DoubleLinkedList {
 		}
 		
 		list.desc();
+		list.add_front(1.5, 2);
+		list.desc();
 	}
 
 }
 
-class LinkedList {
+
+class LinkedListDouble {
+	private LinkedListDouble prev;
+	private LinkedListDouble head;
+	private LinkedListDouble tail;
 	private Object data;
-	private Object next;
-	
-	public LinkedList(Object data) {
-		this.data = data;
-		this.next = null;
-	}
-	
-	public LinkedList get() {
-		return this;
-	}
+	private LinkedListDouble next;
 	
 	public Object getData() {
 		return this.data;
 	}
 	
-	public LinkedList getNext() {
-		return (LinkedList) this.next;
-	}
-	
-	public void add(Object data) {
-		this.next = new LinkedList(data);
-		
-	}
-}
-
-class LinkedListDouble {
-	private LinkedList prev;
-	private LinkedList head;
-	private LinkedList tail;
-	private LinkedList data;
-	
 	public LinkedListDouble(Object data) {
-		this.data = new LinkedList(data);
+		this.data = data;
 		this.prev = null;
-		this.head = this.data;
-		this.tail = this.data;
+		this.head = this;
+		this.tail = this;
+		this.next = null;
+	}
+	
+	public LinkedListDouble get() {
+		return this;
 	}
 	
 	public void desc() {
-		LinkedList node = this.head.get();
-		System.out.println(node.getData());
+		LinkedListDouble node = this.head.get();
 		while (node != null) {
-			System.out.println("asdasd" + node.getData());
-			node = node.getNext();
+			System.out.println(node.getData());
+			node = node.next;
 		}
 	}
 	
-	public void add_front(Object data, LinkedListDouble befor_front) {
-
+	public LinkedListDouble getDoubleLinked() {
+		return this;
+	}
+	
+	public void add_front(Object data, Object befor_front) {
+		LinkedListDouble node = this.head;
+		LinkedListDouble list = new LinkedListDouble(data);
+		while (node.getData() != befor_front) {
+			node = node.next;
+		}
+		LinkedListDouble prevNode = node.prev; // 1 
+		list.next = node;
+		prevNode.next = list;
+		list.prev = prevNode;
 	}
 	
 	public void add(Object data) {
 		LinkedListDouble list = new LinkedListDouble(data);
-		LinkedList nextList = this.data.getNext();
+		LinkedListDouble nextList = this.head;
 		
 		if (nextList == null) {
-			nextList = list.data;
-			list.prev = this.data;
-			this.tail = list.data;
+			this.next = list;
+			list.prev = this;
+			this.tail = list;
 		} else {
-			while (nextList != null) {
-				nextList = nextList.getNext();
+			while (nextList.next != null) {
+				nextList = nextList.next;
 			}
-			nextList = list.data;
-			list.prev = this.data;
-			this.tail = list.data;
-			System.out.println("¿÷¿ªãö" + data);
+			nextList.next = list;
+			list.prev = nextList;
+			this.tail = list;
 		}
-
 	}
-	
 
 }
