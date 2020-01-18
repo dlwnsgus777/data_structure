@@ -37,6 +37,7 @@ class LinkedList {
 	
 	public void add(Object data) {
 		this.next = new LinkedList(data);
+		
 	}
 }
 
@@ -49,7 +50,7 @@ class LinkedListDouble {
 	public LinkedListDouble(Object data) {
 		this.data = new LinkedList(data);
 		this.prev = null;
-		this.head = this.prev;
+		this.head = this.data;
 		this.tail = this.data;
 	}
 	
@@ -67,14 +68,23 @@ class LinkedListDouble {
 	}
 	
 	public void add(Object data) {
-
 		LinkedListDouble list = new LinkedListDouble(data);
-		System.out.println(list.data.getData());
-		list.prev = this.data;
-		System.out.println("dlwjsepdlxj" + list.prev.getData());
-		this.data.add(list.data);
-		this.tail = list.data;
+		LinkedList nextList = this.data.getNext();
 		
+		if (nextList == null) {
+			nextList = list.data;
+			list.prev = this.data;
+			this.tail = list.data;
+		} else {
+			while (nextList != null) {
+				nextList = nextList.getNext();
+			}
+			nextList = list.data;
+			list.prev = this.data;
+			this.tail = list.data;
+			System.out.println("¿÷¿ªãö" + data);
+		}
+
 	}
 	
 
