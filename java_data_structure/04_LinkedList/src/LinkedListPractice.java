@@ -4,50 +4,107 @@ public class LinkedListPractice {
 
 	public static void main(String[] args) {
 		LinkedList list = new LinkedList("one");
-		LinkedList head = list;		// 첫번째 노드를 저장하기 위한 변수
-		
-		for (int i = 0; i < 10; i ++) {
-			list.add(i);
-			list = list.getNext();
-		}
-		
-		list = head;
-
-		while (list.hasNext()) {
-			list.get();
-			list = list.getNext();
-		}
-		list.get();
+		list.add(2);
+		list.findData(2);
+		list.add("one", 3);
+		list.printAll();
+		list.add("Test");
+		list.printAll();
 	}
 }
 
-class LinkedList {
+class Node {
+	
 	private Object data;
 	private Object next;
 	
-	public LinkedList(Object data) {
+	public Node(Object data) {
 		this.data = data;
 		this.next = null;
 	}
 	
+	public Object getData() {
+		return this.data;
+	}
+	
+	public Object getNext() {
+		return this.next;
+	}
+	
+	public void setNext(Object nextNode) {
+		this.next = nextNode;
+	}
+	
+	public void setData(Object data) {
+		this.data = data;
+	}
+}
+
+class LinkedList {
+	
+	private Node data;
+	private Node head;
+	
+	public LinkedList(Object data) {
+		this.data = new Node(data);
+		this.head = this.data;
+	}
+	
 	public void add(Object data) {
-		LinkedList linked = new LinkedList(data);
-		this.next = linked;
-	}
-	
-	public void get() {
-		System.out.println(this.data);
-	}
-	
-	public LinkedList getNext() {
-		return (LinkedList)next;
-	}
-	
-	public boolean hasNext() {
-		if (this.next != null) {
-			return true;
+		if (this.data.getNext() == null) { 
+			Node node = new Node(data);
+			this.data.setNext(node);
 		} else {
-			return false;
+			Node endNode = findEndData();
+			Node node = new Node(data);
+			endNode.setNext(node);
+		}
+		
+		System.out.println("Success Add");
+	}
+	
+	// 첫번째 인자로 받은 값을 가지는 리스트 다음에 data추가.
+	public void add(Object between, Object data) {
+		Node beforeNode = findData(between);
+		Node afterNode = (Node) beforeNode.getNext();
+		
+		if (beforeNode != null) {
+			Node node = new Node(data);
+			beforeNode.setNext(node);
+			node.setNext(afterNode);
+			System.out.println("Success Add Between Data -> " + beforeNode.getData());
+		} 
+	}
+	
+	public Node findEndData() {
+		Node node = this.data;
+		while (node.getNext() != null) {
+			node = (Node) node.getNext();
+		}	
+		return node;
+	}
+	
+	public Node findData(Object value) {
+		if (this.head.getNext() == null) {
+			return null;
+		}
+		Node node = this.head;
+		while (node != null) {
+			if (node.getData() == value) {
+				System.out.println("find Success : " + node.getData());
+				return node;
+			}
+			node = (Node) node.getNext();
+		}
+		return null;
+	}
+	
+	public void printAll() {
+		Node head = this.head;
+		
+		while (head != null) {
+			System.out.println(head.getData());
+			head = (Node) head.getNext();
 		}
 	}
 }
